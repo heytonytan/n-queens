@@ -115,16 +115,17 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      var columns = this.get('n');
+      var cols = this.get('n');
 
-      var columnContainsElement = false;
-      for (var i = 0; i < columns.length; i++) {
+      var colContainsElement = false;
+      for (var i = 0; i < cols; i++) {
+        var row = this.get(i);
         if (row[colIndex] === 1) {
-          if (rowContainsElement) {
+          if (colContainsElement) {
             return true;
           }
-          if (!rowContainsElement) {
-            rowContainsElement = true;
+          if (!colContainsElement) {
+            colContainsElement = true;
           }
         }
       }
