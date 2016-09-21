@@ -18,6 +18,11 @@
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
 
+  // run countNRooksSolutions
+  // store first solution
+  // use first solution to generate solution board
+  // output solution
+
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
@@ -25,6 +30,12 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var solutionCount = undefined; //fixme
+
+  // write a tree class helper function
+
+  // recursively generate tree that returns 2-D array
+
+  // output count
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
