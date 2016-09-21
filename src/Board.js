@@ -85,6 +85,7 @@
       }, 0);
       return numPiecesInRow > 1; // fixme
     },
+    // time complexity, O(n)
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
@@ -93,6 +94,8 @@
         return answer || context.hasRowConflictAt(rowIndex);
       }, false); // fixme
     },
+    // time complexity, O(n^2)
+
 
 
 
@@ -111,6 +114,7 @@
       }, 0);
       return numPiecesInCol > 1;
     },
+    // time complexity, O(n)
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
@@ -119,6 +123,7 @@
         return answer || context.hasColConflictAt(rowIndex);
       }, false);
     },
+    // time complexity O(n^2)
 
 
 
@@ -143,6 +148,7 @@
       }, 0);
       return numPiecesInMajDiag > 1;
     },
+    // time complexity: O(n)
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
@@ -151,6 +157,7 @@
         return answer || context.hasMajorDiagonalConflictAt(rowIndex);
       }, false);
     },
+    // time complexity: O(n^2)
 
 
 
@@ -175,6 +182,7 @@
       }, 0);
       return numPiecesInMinDiag > 1;
     },
+    // time complexity, O(n)
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
@@ -182,8 +190,8 @@
       return _.reduce(_.range(this.get('n') * 2 - 1), function(answer, rowIndex) {
         return answer || context.hasMinorDiagonalConflictAt(rowIndex);
       }, false);
-
     }
+    // time complexity, O(n^2)
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
