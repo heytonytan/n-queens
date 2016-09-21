@@ -152,12 +152,31 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      console.log('started to search for conflicts on ', majorDiagonalColumnIndexAtFirstRow);
+      var conflictFound = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        console.log('searching cell', i, majorDiagonalColumnIndexAtFirstRow);
+        if (this.get(i)[majorDiagonalColumnIndexAtFirstRow++] === 1) {
+          if (conflictFound) {
+            return true;
+          } else {
+            conflictFound = true;
+          }
+        }
+      }
+
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var startIndex = (this.get('n') - 1) - (this.get('n') * 2) + 1;
+      for (var i = startIndex; i < this.get('n'); i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
