@@ -13,7 +13,33 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
+// write a tree class helper function 
+var Tree = function(value) {
+  this.value = value;
+  this.children = [];
+};
 
+var generateRookTree = function(n) {
+
+  // write recursive function that takes in tree and remaining children as arguments
+  var _root = new Tree();
+  var treeRecurse = function(currTree, remainingChildren) {
+    for (var i = 0; i < remainingChildren.length; i++) {
+      // Creates a new tree node and adds it to the tree structure
+      var childTree = new Tree(remainingChildren[i]);
+      currTree.children.push(childTree);
+
+      // Makes a copy of the remainingChildren and removes value at i
+      var restOfChildren = Array.prototype.slice.call(remainingChildren);
+      restOfChildren.splice(i, 1);
+      
+      // recursively adds the remaining children to the tree
+      treeRecurse(childTree, restOfChildren);
+    }
+  };
+  treeRecurse(_root, _.range(n));
+  return _root;
+};
 
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
@@ -29,14 +55,27 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0; //fixme
 
-  // write a tree class helper function
+  // generate tree that returns tree
+  var rookTree = generateRookTree(n);
 
-  // recursively generate tree that returns 2-D array
+  // write depthFirstLog that takes a callback function
+  var depthFirstLog = function(tree, callback) {
+    callback(tree);
+    tree.children.forEach(function(child) {
+      depthFirstLog(child, callback);
+    });
+  };
+
+  // call depthFirstLog to run through tree and count all leaves
+  depthFirstLog(rookTree, function(child) {
+    if (child.children.length === 0) {
+      solutionCount++;
+    }
+  });
 
   // output count
-
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
