@@ -44,10 +44,25 @@ var generateRookTree = function(n) {
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
 
-  // run countNRooksSolutions
-  // store first solution
+  // generate rooktree
+  var rookTree = generateRookTree(n);
+
+  // find first solution
+  var solutionArray = [];
+  var currChild = rookTree.children[0];
+  do {
+    solutionArray.push(currChild.value);
+    currChild = currChild.children[0];
+  } while (currChild !== undefined);
+  
   // use first solution to generate solution board
+  var board = new Board({n: n});
+  for (var i = 0; i < solutionArray.length; i++) {
+    board.togglePiece(i, solutionArray[i]);
+  }
+  
   // output solution
+  solution = board.rows();
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
