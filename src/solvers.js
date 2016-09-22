@@ -41,6 +41,21 @@ var generateRookTree = function(n) {
   return _root;
 };
 
+var checkCollisions = function(currRow, currCol, previousPath) {
+  // for each index, value pair in previousPath
+  var hasCollision = function(x1, y1, x2, y2) {
+    var resultMath = (x2 - x1) / (y2 - y1);
+    return resultMath === 1 || resultMath === -1;
+  };
+  
+  for (var i = 0; i < previousPath.length; i++) {
+    if (hasCollision(currRow, currCol, i, previousPath[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
 var generateQueenTree = function(n) {
 
   // write recursive function that takes in tree and remaining children as arguments
@@ -49,20 +64,37 @@ var generateQueenTree = function(n) {
   // write a version of treeRecurse that takes level, currTree, remainingChildren, previousPath, callback as arguments
   var treeRecurse = function(level, currTree, remainingChildren, previousPath, callback) {
     // if level we are at equals to n, then we know that we have found an arrangement for queens
+    if (level === n) {
       // callback on path, stop the function
       // callback is supposed to take path as an argument and add it to the results
-    
+      callback(previousPath);
+      return;
+    }
     // iterate through remaining children
-
+    for (var i = 0; i < remainingChildren; i++) {
       // for each child, check if there are diagonal collisions upwards the previousPath
+      if (!checkCollisions(level, remainingChildren[i], previousPath)) {
+      // if no collisions, 
+        
+        // make new tree
+        var newTree = new Tree(remainingChildren[i]);
+        // copy array
+        var restOfChildren = Array.prototype.slice.call(remainingChildren);
+        restOfChildren.splice(i, 1);
+        // splice array by index of the remainingChildren
+        // create copy of previous path
 
-        // if no collisions, 
-          // make new tree
-          // copy array
-          // splice array by index of the remainingChildren
-          // recursively call treeRecurse on new node
+        var newPreviousPath = Array.prototype.slice.call(previousPath);
+        // add remainingChildren[i] to previous path
+        newPreviousPath.push(remainingChildren[i]);
+
+        // recursively call treeRecurse on new node
+        treeRecurse(level + 1, newTree, restOfChildren, newPreviousPath, callback);
+    }
   };
-  treeRecurse(_root, _.range(n));
+  treeRecurse(0, _root, _.range(n), [], function(path) { 
+    console.log(path);
+  });
   return _root;
 };
 
@@ -123,6 +155,9 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   var solution = undefined; //fixme
+
+  var queenTree = generateQueenTree(n);
+  console.log(queenTree);
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
