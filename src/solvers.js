@@ -56,7 +56,7 @@ var checkCollisions = function(currRow, currCol, previousPath) {
   return false;
 };
 
-var generateQueenTree = function(n) {
+var generateQueenTree = function(n, callback) {
 
   // write recursive function that takes in tree and remaining children as arguments
   var _root = new Tree();
@@ -93,9 +93,7 @@ var generateQueenTree = function(n) {
       }
     }
   };
-  treeRecurse(0, _root, _.range(n), [], function(path) { 
-    console.log(path);
-  });
+  treeRecurse(0, _root, _.range(n), [], callback);
   return _root;
 };
 
@@ -155,10 +153,25 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = []; //fixme
+  var allSolutions = [];
 
-  var queenTree = generateQueenTree(n);
-  console.log(queenTree);
+  var queenTree = generateQueenTree(n, function(path) {
+    allSolutions.push(path);
+  });
+
+  var board = new Board({n: n});
+
+  // when n == 2 or n == 3, allSolutions is an empty array
+  if (allSolutions.length === 0) {
+    return board.rows();
+  }
+
+  for (var i = 0; i < allSolutions[0].length; i++) {
+    board.togglePiece(i, allSolutions[0][i]);
+  }
+
+  solution = board.rows();
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
@@ -166,7 +179,11 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0; //fixme
+
+  var queenTree = generateQueenTree(n, function() {
+    solutionCount++;
+  });
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
