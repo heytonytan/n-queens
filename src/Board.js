@@ -80,19 +80,32 @@
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
       var row = this.get(rowIndex);
-      var numPiecesInRow = _.reduce(row, function(total, value) {
-        return total + value;
-      }, 0);
-      return numPiecesInRow > 1; // fixme
+      var rowContainsElement = false;
+      for (var i = 0; i < row.length; i++) {
+        if (row[i] === 1) {
+          if (rowContainsElement) {
+            return true;
+          }
+          if (!rowContainsElement) {
+            rowContainsElement = true;
+          }
+        }
+      }
+
+      return false;
     },
     // time complexity, O(n)
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      var context = this;
-      return _.reduce(_.range(this.get('n')), function(answer, rowIndex) {
-        return answer || context.hasRowConflictAt(rowIndex);
-      }, false); // fixme
+      var rows = this.get('n');
+
+      for (var i = 0; i < rows; i++) {
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
     // time complexity, O(n^2)
 
@@ -104,24 +117,35 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      var rows = this.rows();
-      var column = [];
-      rows.forEach(function(row){
-        column.push(row[colIndex]);
-      });
-      var numPiecesInCol = _.reduce(column, function(total, value) {
-        return total + value;
-      }, 0);
-      return numPiecesInCol > 1;
+      var cols = this.get('n');
+
+      var colContainsElement = false;
+      for (var i = 0; i < cols; i++) {
+        var row = this.get(i);
+        if (row[colIndex] === 1) {
+          if (colContainsElement) {
+            return true;
+          }
+          if (!colContainsElement) {
+            colContainsElement = true;
+          }
+        }
+      }
+
+      return false;
     },
     // time complexity, O(n)
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      var context = this;
-      return _.reduce(_.range(this.get('n')), function(answer, rowIndex) {
-        return answer || context.hasColConflictAt(rowIndex);
-      }, false);
+      var columns = this.get('n');
+
+      for (var i = 0; i < columns; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false; // fixme
     },
     // time complexity O(n^2)
 
@@ -132,30 +156,30 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      var board = this.rows();
-      var row = 0;
-      var col = majorDiagonalColumnIndexAtFirstRow;
-      var diagonal = [];
-      while (row < this.get('n') && col < this.get('n')) {
-        if (col >= 0) {
-          diagonal.push(board[row][col]);
+      var conflictFound = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        if (this.get(i)[majorDiagonalColumnIndexAtFirstRow++] === 1) {
+          if (conflictFound) {
+            return true;
+          } else {
+            conflictFound = true;
+          }
         }
-        row++;
-        col++;
-      } 
-      var numPiecesInMajDiag = _.reduce(diagonal, function(total, value) {
-        return total + value;
-      }, 0);
-      return numPiecesInMajDiag > 1;
+      }
+
+      return false;
     },
-    // time complexity: O(n)
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var context = this;
-      return _.reduce(_.range(-1 * this.get('n') + 1, this.get('n')), function(answer, rowIndex) {
-        return answer || context.hasMajorDiagonalConflictAt(rowIndex);
-      }, false);
+      var startIndex = (this.get('n') - 1) - (this.get('n') * 2) + 1;
+      for (var i = startIndex; i < this.get('n'); i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false;
     },
     // time complexity: O(n^2)
 
@@ -166,30 +190,30 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      var board = this.rows();
-      var row = 0;
-      var col = minorDiagonalColumnIndexAtFirstRow;
-      var diagonal = [];
-      while (row < this.get('n') && col >= 0) {
-        if (col < this.get('n')) {
-          diagonal.push(board[row][col]);
+      var conflictFound = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        if (this.get(i)[minorDiagonalColumnIndexAtFirstRow--] === 1) {
+          if (conflictFound) {
+            return true;
+          } else {
+            conflictFound = true;
+          }
         }
-        row++;
-        col--;
-      } 
-      var numPiecesInMinDiag = _.reduce(diagonal, function(total, value) {
-        return total + value;
-      }, 0);
-      return numPiecesInMinDiag > 1;
+      }
+
+      return false;
     },
-    // time complexity, O(n)
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var context = this;
-      return _.reduce(_.range(this.get('n') * 2 - 1), function(answer, rowIndex) {
-        return answer || context.hasMinorDiagonalConflictAt(rowIndex);
-      }, false);
+      var indexes = this.get('n') + (this.get('n') - 2);
+      for (var i = 0; i < indexes; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false; // fixme
     }
     // time complexity, O(n^2)
 
