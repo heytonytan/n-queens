@@ -47,7 +47,7 @@ var checkCollisions = function(currRow, currCol, previousPath) {
     var resultMath = (x2 - x1) / (y2 - y1);
     return resultMath === 1 || resultMath === -1;
   };
-  
+
   for (var i = 0; i < previousPath.length; i++) {
     if (hasCollision(currRow, currCol, i, previousPath[i])) {
       return true;
