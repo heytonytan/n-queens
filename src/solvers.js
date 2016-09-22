@@ -41,6 +41,31 @@ var generateRookTree = function(n) {
   return _root;
 };
 
+var generateQueenTree = function(n) {
+
+  // write recursive function that takes in tree and remaining children as arguments
+  var _root = new Tree();
+
+  // write a version of treeRecurse that takes level, currTree, remainingChildren, previousPath, callback as arguments
+  var treeRecurse = function(level, currTree, remainingChildren, previousPath, callback) {
+    // if level we are at equals to n, then we know that we have found an arrangement for queens
+      // callback on path, stop the function
+      // callback is supposed to take path as an argument and add it to the results
+    
+    // iterate through remaining children
+
+      // for each child, check if there are diagonal collisions upwards the previousPath
+
+        // if no collisions, 
+          // make new tree
+          // copy array
+          // splice array by index of the remainingChildren
+          // recursively call treeRecurse on new node
+  };
+  treeRecurse(_root, _.range(n));
+  return _root;
+};
+
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
 
