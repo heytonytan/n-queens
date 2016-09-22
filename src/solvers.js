@@ -71,7 +71,7 @@ var generateQueenTree = function(n) {
       return;
     }
     // iterate through remaining children
-    for (var i = 0; i < remainingChildren; i++) {
+    for (var i = 0; i < remainingChildren.length; i++) {
       // for each child, check if there are diagonal collisions upwards the previousPath
       if (!checkCollisions(level, remainingChildren[i], previousPath)) {
       // if no collisions, 
@@ -90,6 +90,7 @@ var generateQueenTree = function(n) {
 
         // recursively call treeRecurse on new node
         treeRecurse(level + 1, newTree, restOfChildren, newPreviousPath, callback);
+      }
     }
   };
   treeRecurse(0, _root, _.range(n), [], function(path) { 
